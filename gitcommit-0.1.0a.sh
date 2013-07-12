@@ -3,43 +3,70 @@
 #Ver. 0.1.0a
 #Compatible with Bash 3+
 
-echo "Bugfix (B), Chore (C), Delivers (D), Feature (F), None (N)\nType in letter of selection, then press [ENTER]"
+if [[ ${1} == '' ]] 
+then
+	echo "\n*** Choose wisely.\n**\n* Bugfix (B), Chore (C), Delivers (D), Feature (F), None (N)\n**\n***\nType letter (case-insensitive) of selection, then press [ENTER]\nNote: Type letters with no spaces for more than one."
 
-read commitType
+	read commitType
+else 
+	commitType=${1}
+fi
+
 commitType=`echo ${commitType} | awk '{print tolower($0)}'`
 
-case "${commitType}" in
-	"b")	
-		echo "[BUGFIX] was selected.\n"
-		pivotalMessage="[BUGFIX]"
-		;;
-	"c")	
-		echo "[CHORE] was selected.\n"
-		pivotalMessage="[CHORE]"
-		;;
-	"d")	
-		echo "[DELIVERS] was selected.\n"
-		echo "Type the Pivotal Tracker ID, then press [ENTER]:"
-		read pivotalId
-		if [[ "${pivotalId}" != *#* ]]
-		then
-			pivotalId="#$pivotalId"
-		fi
-		pivotalMessage="[DELIVERS ${pivotalId}]"
-		;;
-	"f") 	
-		echo "[FEATURE] was selected.\n"
-		pivotalMessage="[FEATURE]"
-		;;
-	"n")
-		echo "None! You're on your own!\n"
-		pivotalMessage=" "
-		;;
-	*) 	
-		echo "Beep bop boop. Didn't understand your input.\n Aborted!"
-		exit 0
-		;;
-esac
+pivotalMessage=""
+
+function pivotalTrackerId() {
+	echo "Add the Pivotal Tracker ID or leave blank, then press [Enter]"
+	read pivotalId
+	if [[ ${#pivotalId} == 0 ]]
+	then 
+		pivotalId=''
+		return 0
+	fi
+	if [[ "${pivotalId}" != *#* ]]
+	then
+		pivotalId=" #${pivotalId}"
+	else
+		pivotalId=" ${pivotalId}" 
+	fi
+	return 0
+}
+
+for (( i = 0; i < ${#commitType}; ++i)); do
+    case "${commitType:$i:1}" in
+			"b")	
+				echo "[BUGFIX] was selected.\n"
+				pivotalTrackerId
+				pivotalMessage="${pivotalMessage} [BUGFIX${pivotalId}]"
+				;;
+			"c")	
+				echo "[CHORE] was selected.\n"
+				pivotalTrackerId
+				pivotalMessage="${pivotalMessage} [CHORE$pivotalId]"
+				;;
+			"d")	
+				echo "[DELIVERS] was selected.\n"
+				pivotalTrackerId
+				pivotalMessage="${pivotalMessage} [DELIVERS${pivotalId}]"
+				;;
+			"f") 	
+				echo "[FEATURE] was selected.\n"
+				pivotalTrackerId
+				pivotalMessage="${pivotalMessage} [FEATURE${pivotalId}]"
+				;;
+			"n")
+				echo "None! You're on your own!\n"
+				;;
+			*) 	
+				echo "Beep bop boop. Didn't understand your input: ${*}\n Aborted!"
+				exit 0
+				;;
+		esac
+done
+
+echo ${pivotalMessage}
+
 
 echo "Type commit message, then press [ENTER]:"
 
