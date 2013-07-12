@@ -59,10 +59,10 @@ for (( i = 0; i < ${#commitType}; ++i)); do
 				echo "None! You're on your own!\n"
 				;;
 			*) 	
-				echo "Beep bop boop. Didn't understand your input: ${*}\n Aborted!"
+				echo "Beep bop boop. Didn't understand your input: ${commitType:$i:1}\n Acceptable input: b c d f n\n  Aborting!"
 				exit 0
 				;;
-		esac
+		esac 
 done
 
 echo ${pivotalMessage}
