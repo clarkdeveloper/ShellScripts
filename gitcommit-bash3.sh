@@ -2,7 +2,32 @@
 #Author: Clark - clark@lotdf.com
 #Compatible with Bash 3.x
 
-if [[ ${1} == '' ]] 
+#Check for config; setup if not present
+configFile='gitcommit.cfg'
+commitMessageFile='gitcommit-message.txt'
+if [ ! -e ${configFile} ] || [ ${1} == 'config' ]
+then
+	echo '\n***\n**\n* Hello. Quick setup required before using!\n**\n***\n'
+	touch ${configFile}
+	touch ${commitMessageFile}
+	echo 'gitcommit.cfg has been created.\ngitcommit-message.txt has been created.\n'
+	echo 'Use a editor for commit messages?\nAdd it here (subl, bbedit, etc.), or leave this blank to use the command line, then Press [Enter]'
+	read userEditor
+	editorSetting=''
+	if [[ ${userEditor} != '' ]]
+	then
+		editorSetting=${userEditor}
+	fi
+	editorSetting="gitcommit_editor=${editorSetting}"
+	messageSetting="gitcommit_message=${commitMessageFile}"
+	echo "${editorSetting}\n${messageSetting}" > ${configFile}
+	read -p "Setup is all done. If you want to make changes later, pass 'config' as an argument when calling the script. Press [ENTER] to use the script."
+fi
+source ${configFile}
+useEditor=${gitcommit_editor}
+messageFile=${gitcommit_message}
+
+if [[ ${1} == '' ]] || [[ ${1} == 'config' ]] 
 then
 	echo "\n*** Choose wisely.\n**\n* Bugfix (B), Chore (C), Delivers (D), Feature (F), None (N)\n**\n***\nType letter (case-insensitive) of selection, then press [ENTER]\nNote: Type letters with no spaces for more than one."
 
@@ -66,10 +91,17 @@ done
 
 echo ${pivotalMessage}
 
-
-echo "Type commit message, then press [ENTER]:"
-
-read commitComment
+if [[ ${useEditor} != '' ]]
+then
+	echo '' > ${messageFile}
+	${useEditor} ${messageFile}
+	read -p "Press [ENTER] when you are finished with the commit message in your editor(${useEditor})."
+	# tr -d "\n\r" < ${messageFile}
+	commitComment=`cat -s ${messageFile} | tr "\n" " "`
+else 
+	echo "Type commit message, then press [ENTER]:"
+	read commitComment
+fi
 
 if [ "${pivotalMessage}" != " " ]
 then
