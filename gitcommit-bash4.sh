@@ -1,7 +1,6 @@
 #!/bin/bash
 #Author: Clark - clark@lotdf.com
-#Ver. 0.1.0b
-#Compatible with bash version 4+ 
+#Compatible with bash version 4.x 
 
 echo -e "Bugfix (B), Chore (C), Delivers (D), Feature (F), None (N)\nType in letter of selection, then press [ENTER]"
 

@@ -1,6 +1,5 @@
 #!/bin/bash
 #Author: Clark - clark@lotdf.com
-#Ver. 0.1.0a
 #Compatible with Bash 3.x
 
 if [[ ${1} == '' ]] 
