@@ -4,7 +4,12 @@ ShellScripts
 A collection of helpful shell scripts. 
 
 
-##gitcommit 
+##gitcommit
+
+###Versions
+
+gitcommit-bash3: Works with bash 3.x; OS X 10.8 ships with bash 3
+gitcommit-bash4: Works with bash 4.x
 
 ###Usage
 
