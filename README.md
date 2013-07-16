@@ -4,23 +4,27 @@ ShellScripts
 A collection of helpful shell scripts. 
 
 
-##gitcommit
+##pivcommit (git commit with some pivotal tracker goodness)
 
 ###Versions
 
-gitcommit-bash3: Works with bash 3.x; OS X 10.8 ships with bash 3
+pivcommit-osx: Works with bash 3.x; Specific to OS X
 
-gitcommit-bash4: Works with bash 4.x
+####Requirements
+
+HomeBrew coreutils - in particular greadlink
+
+pivcommit-bash4: Works with bash 4.x
 
 ###Usage
 
-Setup an alias e.g. gcommit
+Setup an alias e.g. pivcommit to execute shell script
 
-gcommit 
+pivcommit 
 
 or
 
-gcommit [options]
+pivcommit [options]
 
 Valid options: b c d f n 
 
@@ -32,7 +36,7 @@ n: none
 
 Options can be used as many times as needed for the commit.
 
-e.g. gcommit bbd 
+e.g. pivcommit bbd 
 	
 	Produces: [BUGFIX] [BUGFIX] [DELIVERS]
 
