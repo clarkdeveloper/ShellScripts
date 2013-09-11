@@ -1,0 +1,30 @@
+#!/bin/bash
+#Author: Clark - clark@lotdf.com
+#Purpose: To be as lazy as possible when creating other scripts to accomplish tasks without too much effort.  
+
+if [ ! -e ${1} ]
+then
+	newsh="${1}.sh"
+	echo "Type in Author information if desired, then Press [ENTER]"
+	read authorInfo
+	echo "Type in Purpose info if desired, then Press [ENTER]"
+	read purposeInfo
+
+	echo "Creating file: ${newsh}"
+
+	touch ${newsh}
+
+	echo "#!/bin/bash\n#Author: ${authorInfo}\n#Purpose: ${purposeInfo}\n\n\n\necho \"All done.\"\nexit 0" >> ${newsh}
+
+	echo "Done."
+
+	echo "Making ${newsh} executable."
+
+	chmod +x ${newsh}
+
+	echo "All done."
+
+	exit 0
+else 
+	echo 'Error. Every file needs a name!\nUsage: shcreate.sh myAwesomeScript'
+fi
